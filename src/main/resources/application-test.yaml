@@ -1,0 +1,9 @@
+micronaut:
+  application:
+    name: iotBackupManager
+
+application:
+  drive-credentials-directory: /tmp
+  drive-target-directory: tmp
+  tasmota-ip-addresses: 127.0.0.1
+  backup-directories: /tmp

@@ -1,0 +1,6 @@
+applicationType: cli
+defaultPackage: com.github.ivanmarban
+testFramework: junit
+sourceLanguage: java
+buildTool: maven
+features: [annotation-api, app-name, graalvm, jackson-databind, java, junit, lombok, maven, picocli, picocli-java-application, picocli-junit, properties, readme, shade, slf4j-simple]
