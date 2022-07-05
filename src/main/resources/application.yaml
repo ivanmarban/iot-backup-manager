@@ -3,7 +3,6 @@ micronaut:
     name: iotBackupManager
 
 application:
-  drive-credentials-directory: ${DRIVE_CREDENTIALS_DIR}
-  drive-target-directory: ${DRIVE_TARGET_DIR}
-  tasmota-ip-addresses: ${TASMOTA_IP_ADDRESSES}
-  backup-directories: ${BACKUP_DIRS}
+  google-drive-credentials-folder: ${DRIVE_CREDENTIALS_DIR}
+  tasmota-devices: ${TASMOTA_DEVICES}
+  openhab-folder: ${OPENHAB_DIR}
