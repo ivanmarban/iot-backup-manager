@@ -9,12 +9,10 @@ import java.util.List;
 @ConfigurationProperties("application")
 public class AppConfig {
 
-	private List<String> tasmotaIpAddresses;
+    private String googleDriveCredentialsFolder;
 
-	private List<String> backupDirectories;
+    private List<String> tasmotaDevices;
 
-	private String driveCredentialsDirectory;
-
-	private String driveTargetDirectory;
+    private String openhabFolder;
 
 }
