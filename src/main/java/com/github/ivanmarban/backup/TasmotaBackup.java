@@ -67,7 +67,8 @@ public class TasmotaBackup implements Backup {
                 copyStreamContent(inputStream, outputStream);
                 paths.add(downloadedFile);
                 log.info("Downloaded backup configuration for host [{}]", host);
-            } catch (IOException | HttpHeaderValueException e) {
+            }
+            catch (IOException | HttpHeaderValueException e) {
                 throw new RuntimeException("Error downloading backup for device [" + host + "]", e);
             }
         });
