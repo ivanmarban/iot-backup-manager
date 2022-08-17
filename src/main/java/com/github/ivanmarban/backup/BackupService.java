@@ -2,6 +2,7 @@ package com.github.ivanmarban.backup;
 
 import com.github.ivanmarban.gdrive.GoogleDriveService;
 import com.google.api.services.drive.model.File;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,18 +19,14 @@ public class BackupService {
     private static final List<String> FILES = Arrays.asList(OpenHabBackup.TAR_GZ_FILENAME,
             TasmotaBackup.TAR_GZ_FILENAME);
 
-    private final TasmotaBackup tasmotaBackup;
+    @Inject
+    private TasmotaBackup tasmotaBackup;
 
-    private final OpenHabBackup openHabBackup;
+    @Inject
+    private OpenHabBackup openHabBackup;
 
-    private final GoogleDriveService googleDriveService;
-
-    public BackupService(TasmotaBackup tasmotaBackup, OpenHabBackup openHabBackup,
-            GoogleDriveService googleDriveService) {
-        this.tasmotaBackup = tasmotaBackup;
-        this.openHabBackup = openHabBackup;
-        this.googleDriveService = googleDriveService;
-    }
+    @Inject
+    private GoogleDriveService googleDriveService;
 
     public void createBackup() throws IOException {
         Path tempFolder = Files.createTempDirectory("iot-backup-manager");

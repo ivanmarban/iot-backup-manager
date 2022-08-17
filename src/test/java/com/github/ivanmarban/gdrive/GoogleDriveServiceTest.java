@@ -50,7 +50,7 @@ public class GoogleDriveServiceTest {
     @DisplayName("Should return fileId")
     public void testGetFileId() throws IOException {
         List<File> aFiles = new ArrayList<>();
-        aFiles.add(fileMock());
+        aFiles.add(getFile());
         List<File> bFiles = new ArrayList<>();
         bFiles.add(new File().setName("foo").setId(FILE_ID).setVersion(FILE_VERSION));
         when(fileListB.getFiles()).thenReturn(bFiles);
@@ -78,11 +78,11 @@ public class GoogleDriveServiceTest {
     @DisplayName("Should upload file to drive")
     public void testUploadFile() throws IOException {
         when(drive.files().create(any(File.class), any(AbstractInputStreamContent.class)).setFields(anyString())
-                .execute()).thenReturn(fileMock());
-        File f = googleDriveService.uploadFile(PATH);
-        assertEquals(FILE_ID, f.getId());
-        assertEquals(FILE_NAME, f.getName());
-        assertEquals(FILE_VERSION, f.getVersion());
+                .execute()).thenReturn(getFile());
+        File file = googleDriveService.uploadFile(PATH);
+        assertEquals(FILE_ID, file.getId());
+        assertEquals(FILE_NAME, file.getName());
+        assertEquals(FILE_VERSION, file.getVersion());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class GoogleDriveServiceTest {
     @DisplayName("Should update file on drive")
     public void testUpdateFile() throws IOException {
         when(drive.files().update(anyString(), any(), any(AbstractInputStreamContent.class)).setFields(anyString())
-                .execute()).thenReturn(fileMock());
+                .execute()).thenReturn(getFile());
         File file = googleDriveService.updateFile(FILE_NAME, PATH);
         assertEquals(FILE_ID, file.getId());
         assertEquals(FILE_NAME, file.getName());
@@ -116,7 +116,7 @@ public class GoogleDriveServiceTest {
         assertEquals("Unable to update file [id=" + FILE_ID + ", name=" + FILE_NAME + "]", exception.getMessage());
     }
 
-    private File fileMock() {
+    private File getFile() {
         return new File().setName(FILE_NAME).setId(FILE_ID).setVersion(FILE_VERSION);
     }
 

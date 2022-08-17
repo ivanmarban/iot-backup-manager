@@ -1,6 +1,6 @@
 package com.github.ivanmarban.gdrive;
 
-import com.github.ivanmarban.config.AppConfig;
+import com.github.ivanmarban.app.AppConfig;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.java6.auth.oauth2.VerificationCodeReceiver;
@@ -30,7 +30,7 @@ public class GoogleDrive {
 
     private static final String APPLICATION_NAME = "iot-backup-manager";
 
-    private static final String CLIENT_SECRET_FILE_NAME = "credentials.json";
+    private static final String CREDENTIALS_JSON = "credentials.json";
 
     private static final GsonFactory GSON_FACTORY = GsonFactory.getDefaultInstance();
 
@@ -59,7 +59,7 @@ public class GoogleDrive {
 
     @Singleton
     public GoogleClientSecrets getGoogleClientSecrets(AppConfig appConfig) throws IOException {
-        File file = new File(appConfig.getGoogleDriveCredentialsFolder(), CLIENT_SECRET_FILE_NAME);
+        File file = new File(appConfig.getGoogleDriveCredentialsFolder(), CREDENTIALS_JSON);
         InputStream inputStream = new FileInputStream(file);
         return GoogleClientSecrets.load(GSON_FACTORY, new InputStreamReader(inputStream));
     }

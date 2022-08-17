@@ -1,6 +1,6 @@
 package com.github.ivanmarban.gdrive;
 
-import com.github.ivanmarban.config.AppConfig;
+import com.github.ivanmarban.app.AppConfig;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.VerificationCodeReceiver;
 import com.google.api.client.googleapis.auth.oauth2.*;

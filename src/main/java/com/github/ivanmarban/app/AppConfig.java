@@ -1,4 +1,4 @@
-package com.github.ivanmarban.config;
+package com.github.ivanmarban.app;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import lombok.Data;

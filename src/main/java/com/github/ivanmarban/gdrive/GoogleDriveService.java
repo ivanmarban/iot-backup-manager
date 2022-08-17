@@ -4,8 +4,8 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,11 +24,8 @@ public class GoogleDriveService {
 
     private static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
 
-    private final Drive drive;
-
-    public GoogleDriveService(Drive drive) {
-        this.drive = drive;
-    }
+    @Inject
+    private Drive drive;
 
     public Optional<String> getFileId(String fileName) {
         try {

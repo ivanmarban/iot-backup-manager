@@ -1,7 +1,8 @@
 package com.github.ivanmarban.backup;
 
+import com.github.ivanmarban.app.AppConfig;
 import com.github.ivanmarban.compress.TarGzipCompressor;
-import com.github.ivanmarban.config.AppConfig;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,14 +14,11 @@ public class OpenHabBackup implements Backup {
 
     public static final String TAR_GZ_FILENAME = "openhab.tar.gz";
 
-    private final AppConfig appConfig;
+    @Inject
+    private AppConfig appConfig;
 
-    private final TarGzipCompressor tarGzipCompressor;
-
-    public OpenHabBackup(AppConfig appConfig, TarGzipCompressor tarGzipCompressor) {
-        this.appConfig = appConfig;
-        this.tarGzipCompressor = tarGzipCompressor;
-    }
+    @Inject
+    private TarGzipCompressor tarGzipCompressor;
 
     @Override
     public void create(Path outputFolder) {

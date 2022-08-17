@@ -1,7 +1,7 @@
 package com.github.ivanmarban.backup;
 
 import com.github.ivanmarban.compress.TarGzipCompressor;
-import com.github.ivanmarban.config.AppConfig;
+import com.github.ivanmarban.app.AppConfig;
 import io.micronaut.http.HttpHeaders;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
