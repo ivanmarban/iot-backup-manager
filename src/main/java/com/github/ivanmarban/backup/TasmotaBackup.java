@@ -1,7 +1,7 @@
 package com.github.ivanmarban.backup;
 
-import com.github.ivanmarban.compress.TarGzipCompressor;
 import com.github.ivanmarban.app.AppConfig;
+import com.github.ivanmarban.compress.TarGzipCompressor;
 import com.github.ivanmarban.exception.HttpHeaderValueException;
 import io.micronaut.http.HttpHeaders;
 import jakarta.inject.Inject;
@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.ByteBuffer;
@@ -49,7 +51,12 @@ public class TasmotaBackup implements Backup {
     public void create(Path outputFolder) {
         log.info("Creating Tasmota devices backup");
         List<Path> paths = downloadDevicesConfiguration(outputFolder);
-        tarGzipCompressor.compressFiles(paths, outputFolder.resolve(TAR_GZ_FILENAME));
+        if (paths.size() > 0) {
+            tarGzipCompressor.compressFiles(paths, outputFolder.resolve(TAR_GZ_FILENAME));
+        }
+        else {
+            log.warn("No Tasmota devices backup made. Skipping.");
+        }
     }
 
     private List<Path> downloadDevicesConfiguration(Path outputFolder) {
@@ -58,6 +65,7 @@ public class TasmotaBackup implements Backup {
             try {
                 URL url = new URL(templateUrl(Map.of("host", host)));
                 URLConnection urlConnection = url.openConnection();
+                urlConnection.setConnectTimeout(5000);
                 InputStream inputStream = urlConnection.getInputStream();
                 String fileName = getFileName(urlConnection);
                 Path downloadedFile = outputFolder.resolve(fileName);
@@ -65,6 +73,9 @@ public class TasmotaBackup implements Backup {
                 copyStreamContent(inputStream, outputStream);
                 paths.add(downloadedFile);
                 log.info("Downloaded backup configuration for host [{}]", host);
+            }
+            catch (SocketTimeoutException | ConnectException e) {
+                log.warn("Could not download backup for device [{}] [{}]", host, e.getMessage());
             }
             catch (IOException | HttpHeaderValueException e) {
                 throw new RuntimeException("Error downloading backup for device [" + host + "]", e);

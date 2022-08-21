@@ -14,11 +14,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.junit.jupiter.MockServerExtension;
 import org.mockserver.junit.jupiter.MockServerSettings;
+import org.mockserver.matchers.TimeToLive;
+import org.mockserver.matchers.Times;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static com.google.common.net.HttpHeaders.CONTENT_DISPOSITION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,6 +66,14 @@ class TasmotaBackupTest {
                         .withHeaders(header(CONTENT_DISPOSITION, "attachment; filename=" + FILE_NAME)));
         tasmotaBackup.create(TARGET_DIR);
         verify(tarGzipCompressor, times(1)).compressFiles(anyList(), any(Path.class));
+    }
+
+    @Test
+    @DisplayName("Should not download & compress Tasmota device configuration")
+    void testDoesNotDownloadBackupConfiguration() {
+        when(appConfig.getTasmotaDevices()).thenReturn(List.of("10.0.0.1"));
+        tasmotaBackup.create(TARGET_DIR);
+        verify(tarGzipCompressor, times(0)).compressFiles(anyList(), any(Path.class));
     }
 
     @Test

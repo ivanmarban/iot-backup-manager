@@ -37,9 +37,10 @@ public class BackupServiceTest {
     private BackupService backupService;
 
     @Test
-    @DisplayName("Should create a new file in Google Drive")
+    @DisplayName("Should upload backup files to Google Drive")
     public void testBackupServiceShouldUploadFiles() throws IOException {
         when(googleDriveService.uploadFile(any(Path.class))).thenReturn(mockFile());
+        createFiles();
         backupService.createBackup();
         verify(tasmotaBackup, times(1)).create(any(Path.class));
         verify(openHabBackup, times(1)).create(any(Path.class));
@@ -48,8 +49,19 @@ public class BackupServiceTest {
     }
 
     @Test
+    @DisplayName("Should not upload backup files to Google Drive")
+    public void testBackupServiceShouldNotUploadFiles() throws IOException {
+        backupService.createBackup();
+        verify(tasmotaBackup, times(1)).create(any(Path.class));
+        verify(openHabBackup, times(1)).create(any(Path.class));
+        verify(googleDriveService, times(0)).getFileId(anyString());
+        verify(googleDriveService, times(0)).uploadFile(any(Path.class));
+    }
+
+    @Test
     @DisplayName("Should update a file's metadata and/or content in Google Drive")
     public void testBackupServiceShouldUpdateFiles() throws IOException {
+        createFiles();
         when(googleDriveService.updateFile(anyString(), any(Path.class))).thenReturn(mockFile());
         when(googleDriveService.getFileId(anyString())).thenReturn(Optional.of("foo"));
         backupService.createBackup();
@@ -62,6 +74,21 @@ public class BackupServiceTest {
 
     private File mockFile() {
         return new File().setName(FILE_NAME).setId(FILE_ID).setVersion(FILE_VERSION);
+    }
+
+    private void createFiles() {
+        doAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            Path tempPath = (Path) args[0];
+            tempPath.resolve(TasmotaBackup.TAR_GZ_FILENAME).toFile().createNewFile();
+            return null;
+        }).when(tasmotaBackup).create(any(Path.class));
+        doAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            Path tempPath = (Path) args[0];
+            tempPath.resolve(OpenHabBackup.TAR_GZ_FILENAME).toFile().createNewFile();
+            return null;
+        }).when(openHabBackup).create(any(Path.class));
     }
 
 }

@@ -7,6 +7,7 @@ import com.google.api.client.googleapis.auth.oauth2.*;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -19,7 +20,8 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -47,6 +49,7 @@ public class GoogleDriveTest {
     private final GoogleDrive googleDrive = new GoogleDrive();
 
     @Test
+    @DisplayName("Should create [FileDataStoreFactory] object")
     public void testGetFileDataStoreFactory() throws IOException {
         when(appConfigMock.getGoogleDriveCredentialsFolder()).thenReturn("./target");
         FileDataStoreFactory fileDataStoreFactory = googleDrive.getFileDataStoreFactory(appConfigMock);
@@ -54,18 +57,21 @@ public class GoogleDriveTest {
     }
 
     @Test
+    @DisplayName("Should create [HttpTransport] object")
     public void testGetHttpTransport() throws GeneralSecurityException, IOException {
         HttpTransport httpTransport = googleDrive.getHttpTransport();
         assertNotNull(httpTransport);
     }
 
     @Test
+    @DisplayName("Should create [Drive] object")
     public void testGetDrive() {
         Drive drive = googleDrive.getDrive(httpTransportMock, credentialMock);
         assertEquals("iot-backup-manager", drive.getApplicationName());
     }
 
     @Test
+    @DisplayName("Should create [GoogleClientSecrets] object")
     public void testGetGoogleClientSecrets() throws IOException {
         when(appConfigMock.getGoogleDriveCredentialsFolder()).thenReturn("./src/test/resources");
         GoogleClientSecrets googleClientSecrets = googleDrive.getGoogleClientSecrets(appConfigMock);
@@ -74,6 +80,7 @@ public class GoogleDriveTest {
     }
 
     @Test
+    @DisplayName("Should create [GoogleAuthorizationCodeFlow] object")
     public void testGetGoogleAuthorizationCodeFlow() throws IOException {
         when(appConfigMock.getGoogleDriveCredentialsFolder()).thenReturn("./src/test/resources");
         GoogleClientSecrets googleClientSecrets = googleDrive.getGoogleClientSecrets(appConfigMock);
@@ -84,12 +91,14 @@ public class GoogleDriveTest {
     }
 
     @Test
-    public void testGetVerificationCodeReceiver(){
+    @DisplayName("Should create [verificationCodeReceiver] object")
+    public void testGetVerificationCodeReceiver() {
         VerificationCodeReceiver verificationCodeReceiver = googleDrive.getVerificationCodeReceiver();
         assertNotNull(verificationCodeReceiver);
     }
 
     @Test
+    @DisplayName("Should create [Credential] object")
     public void testGetCredential() throws IOException {
         GoogleAuthorizationCodeRequestUrl googleAuthorizationCodeRequestUrl = new GoogleAuthorizationCodeRequestUrl(
                 GoogleOAuthConstants.AUTHORIZATION_SERVER_URL, "client-id", "http://localhost", List.of("drive"));

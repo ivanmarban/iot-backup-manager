@@ -32,7 +32,11 @@ public class BackupService {
         Path tempFolder = Files.createTempDirectory("iot-backup-manager");
         tasmotaBackup.create(tempFolder);
         openHabBackup.create(tempFolder);
-        FILES.forEach(file -> uploadBackupFile(tempFolder, file));
+        FILES.forEach(file -> {
+            if (tempFolder.resolve(file).toFile().exists()) {
+                uploadBackupFile(tempFolder, file);
+            }
+        });
     }
 
     private void uploadBackupFile(Path tempFolder, String fileName) {
