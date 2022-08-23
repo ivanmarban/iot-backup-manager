@@ -28,6 +28,7 @@ public class TarGzipCompressor implements Compressor {
                         bufferedOutputStream);
                 TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(
                         gzipCompressorOutputStream)) {
+            tarArchiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
             for (Path file : inputFiles) {
                 if (!Files.isRegularFile(file)) {
                     throw new IOException("Supports only files!");
@@ -53,6 +54,7 @@ public class TarGzipCompressor implements Compressor {
                         bufferedOutputStream);
                 TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(
                         gzipCompressorOutputStream)) {
+            tarArchiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
             if (!Files.isDirectory(inputFolder)) {
                 throw new IOException("Supports only folder!");
             }
