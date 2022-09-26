@@ -11,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -74,7 +71,7 @@ public class TasmotaBackup implements Backup {
                 paths.add(downloadedFile);
                 log.info("Downloaded backup configuration for host [{}]", host);
             }
-            catch (SocketTimeoutException | ConnectException e) {
+            catch (SocketTimeoutException | ConnectException | NoRouteToHostException e) {
                 log.warn("Could not download backup for device [{}] [{}]", host, e.getMessage());
             }
             catch (IOException | HttpHeaderValueException e) {
