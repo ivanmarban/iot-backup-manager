@@ -5,7 +5,7 @@ A custom application for backing up IOT stuff.
 
 ### Configuration:
 ``` sh
-${DRIVE_CREDENTIALS_DIR}  - Folger holding Google Driver stored credentials.
+${DRIVE_CREDENTIALS_DIR}  - Folger holding Google Drive stored credentials.
 ${TASMOTA_DEVICES}        - Comma separated list of tasmota devices ip addresss.
 ${OPENHAB_DIR}            - Folder holding OpenHab installation.
 ```
